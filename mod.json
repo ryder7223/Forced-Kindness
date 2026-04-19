@@ -1,0 +1,16 @@
+{
+	"geode": "5.6.1",
+	"gd": {
+		"win": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "ryder7223.forced-kindness",
+	"name": "Forced Kindness",
+	"version": "v1.0.0",
+	"developer": "Ryder7223",
+	"description": "Replaces the dislike button with the like button",
+	"tags": ["joke"],
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	}
+}
