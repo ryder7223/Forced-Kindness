@@ -1,35 +1,33 @@
-#include <Geode/Geode.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/Loader.hpp>
+#include <Geode/modify/LikeItemLayer.hpp>
 
 using namespace geode::prelude;
 
-$on_mod(Loaded) {
-    auto baseAddr = geode::base::get();
+class $modify(MyLikeItemLayer, LikeItemLayer) {
+    void onDislike(CCObject* sender) {
+        LikeItemLayer::triggerLike(true);
+        return;
+    }
+    bool init(LikeItemType type, int id, int parentID) {
+        if (!LikeItemLayer::init(type, id, parentID)) return false;
 
-    #if defined(GEODE_IS_WINDOWS)
+        auto like = typeinfo_cast<CCMenuItemSpriteExtra*>(
+            this->m_mainLayer->querySelector("action-menu > like-button")
+        );
+        auto dislike = typeinfo_cast<CCMenuItemSpriteExtra*>(
+            this->m_mainLayer->querySelector("action-menu > dislike-button")
+        );
 
-    Mod::get()->patch(
-        reinterpret_cast<void*>(baseAddr + 0x32E240),
-        { 0xB2, 0x01 }
-    );
+        if (!like || !dislike) return true;
 
-    Mod::get()->patch(
-        reinterpret_cast<void*>(baseAddr + 0x32E0A3),
-        { 0x41 }
-    );
+        auto likeHandler = like->m_pfnSelector;
+        auto likeNormal = like->getNormalImage();
 
-    #elif defined(GEODE_IS_IOS)
+        if (!likeHandler || !likeNormal) return true;
 
-    Mod::get()->patch(
-        reinterpret_cast<void*>(baseAddr + 0x24cdd1),
-        { 0xac }
-    );
+        dislike->m_pfnSelector = likeHandler;
+        dislike->setNormalImage(likeNormal);
+        dislike->updateSprite();
 
-    Mod::get()->patch(
-        reinterpret_cast<void*>(baseAddr + 0x24cf84),
-        { 0x21 }
-    );
-
-    #endif
-}
+        return true;
+    }
+};
