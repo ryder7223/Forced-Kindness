@@ -9,7 +9,6 @@ $on_mod(Loaded) {
 
     #if defined(GEODE_IS_WINDOWS)
 
-    // Windows patches
     Mod::get()->patch(
         reinterpret_cast<void*>(baseAddr + 0x32E240),
         { 0xB2, 0x01 }
