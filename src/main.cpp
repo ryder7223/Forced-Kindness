@@ -20,12 +20,22 @@ class $modify(MyLikeItemLayer, LikeItemLayer) {
         if (!like || !dislike) return true;
 
         auto likeHandler = like->m_pfnSelector;
-        auto likeNormal = like->getNormalImage();
+        auto likeNormal = static_cast<CCSprite*>(like->getNormalImage());
 
         if (!likeHandler || !likeNormal) return true;
 
+        auto newSprite = CCSprite::createWithTexture(likeNormal->getTexture());
+        newSprite->setTextureRect(
+            likeNormal->getTextureRect(),
+            likeNormal->isTextureRectRotated(),
+            likeNormal->getContentSize()
+        );
+        newSprite->setScale(likeNormal->getScale());
+        newSprite->setFlipX(likeNormal->isFlipX());
+        newSprite->setFlipY(likeNormal->isFlipY());
         dislike->m_pfnSelector = likeHandler;
-        dislike->setNormalImage(likeNormal);
+        dislike->setNormalImage(newSprite);
+        dislike->getNormalImage()->setPosition(0, 0);
         dislike->updateSprite();
 
         return true;
