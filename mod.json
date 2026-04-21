@@ -6,6 +6,9 @@
 		"mac": "2.2081",
 		"ios": "2.2081"
 	},
+	"links": {
+		"source": "https://github.com/ryder7223/Forced-Kindness"
+	},
 	"id": "ryder7223.forced-kindness",
 	"name": "Forced Kindness",
 	"version": "v1.0.0",
