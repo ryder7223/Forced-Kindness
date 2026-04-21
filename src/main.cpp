@@ -3,12 +3,6 @@
 using namespace geode::prelude;
 
 class $modify(MyLikeItemLayer, LikeItemLayer) {
-    // Redirect the dislike action to trigger the like behavior instead.
-    void onDislike(CCObject* sender) {
-        LikeItemLayer::triggerLike(true);
-        return;
-    }
-
     bool init(LikeItemType type, int id, int parentID) {
         if (!LikeItemLayer::init(type, id, parentID)) {
             return false;
